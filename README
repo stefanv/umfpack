@@ -1,0 +1,4 @@
+The umfpack scikit provides wrappers of UMFPACK sparse direct solver to SciPy.
+
+It should work both with the latest SVN, and the last releases versions of
+NumPy and SciPy.

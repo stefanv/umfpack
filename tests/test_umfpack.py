@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 #
 
-""" Test functions for UMFPACK wrappers
-
+"""
+Test functions for UMFPACK solver. The solver is accessed via spsolve(),
+so the built-in SuperLU solver is tested too, in single precision.
 """
 
 import warnings
@@ -10,11 +11,19 @@ import warnings
 from numpy import transpose, array, arange
 
 import random
-from scipy.testing import *
+from numpy.testing import *
 
 from scipy import rand, matrix, diag, eye
 from scipy.sparse import csc_matrix, dok_matrix, spdiags, SparseEfficiencyWarning
-from scipy.splinalg import linsolve
+
+import scipy
+try:
+    if scipy.version.version < '0.7.0.dev3861':
+        import scipy.linsolve as linsolve
+    else:
+        import scipy.sparse.linalg.dsolve.linsolve as linsolve
+except (ImportError, AttributeError):
+    raise ImportError( "Cannot import linsolve!" )
 
 warnings.simplefilter('ignore',SparseEfficiencyWarning)
 
@@ -53,7 +62,8 @@ class TestSolvers(TestCase):
         x = linsolve.spsolve(a, b.astype('f'))
         #print x
         #print "Error: ", a*x-b
-        assert_array_almost_equal(a*x, b)
+        # single precision: be more generous...
+        assert_array_almost_equal(a*x, b, decimal = 5)
 
 
     def test_solve_complex_umfpack(self):
