@@ -1,0 +1,10 @@
+[umfpack]
+include_dirs = /Users/stefan/src/UMFPACK/Include
+library_dirs = /Users/stefan/src/UMFPACK/Lib
+umfpack_libs = umfpack
+
+[amd]
+include_dirs = /Users/stefan/src/AMD/Include
+library_dirs = /Users/stefan/src/AMD/Lib
+amd_libs = amd
+
