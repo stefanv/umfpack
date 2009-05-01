@@ -2,3 +2,45 @@ The umfpack scikit provides wrappers of UMFPACK sparse direct solver to SciPy.
 
 It should work both with the latest SVN, and the last releases versions of
 NumPy and SciPy.
+
+Installation on OSX
+===================
+- Download UMFPACK, UFconfig and AMD from
+  http://www.cise.ufl.edu/research/sparse/umfpack/
+
+- Unpack the archives in the same directory, so that you have
+  src/AMD
+     /UFconfig
+     /UMFPACK
+
+- Edit src/UFconfig/UFconfig.mk and remove -lgfortranbegin and -lg2c from
+  BLAS::
+
+    BLAS = -lblas -lgfortran #-lgfortranbegin -lg2c
+
+- Go into src/UMFPACK and run "make"
+
+- Copy src/UFconfig/UFconfig.h to src/UMFPACK/Includes
+
+- Create a site.cfg in this directory (the root of the scikit), with::
+
+    umfpack]
+    include_dirs = /Users/stefan/src/UMFPACK/Include
+    library_dirs = /Users/stefan/src/UMFPACK/Lib
+    umfpack_libs = umfpack
+
+    [amd]
+    include_dirs = /Users/stefan/src/AMD/Include
+    library_dirs = /Users/stefan/src/AMD/Lib
+    amd_libs = amd
+
+- Compile and install the scikit, using
+
+  ::
+
+    python setup.py install
+
+    or
+
+    python setup.py install --prefix=${HOME} # for local install
+
